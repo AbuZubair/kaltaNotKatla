@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/kaltaNotKatla/static/css/main.43bc7fb9.css",
-    "main.js": "/kaltaNotKatla/static/js/main.0b710384.js",
+    "main.js": "/kaltaNotKatla/static/js/main.a49d5d8b.js",
     "static/js/787.953270c2.chunk.js": "/kaltaNotKatla/static/js/787.953270c2.chunk.js",
     "static/media/indonesian-words.txt": "/kaltaNotKatla/static/media/indonesian-words.f15a16c53eea230d6dc0.txt",
     "index.html": "/kaltaNotKatla/index.html",
     "main.43bc7fb9.css.map": "/kaltaNotKatla/static/css/main.43bc7fb9.css.map",
-    "main.0b710384.js.map": "/kaltaNotKatla/static/js/main.0b710384.js.map",
+    "main.a49d5d8b.js.map": "/kaltaNotKatla/static/js/main.a49d5d8b.js.map",
     "787.953270c2.chunk.js.map": "/kaltaNotKatla/static/js/787.953270c2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.43bc7fb9.css",
-    "static/js/main.0b710384.js"
+    "static/js/main.a49d5d8b.js"
   ]
 }
