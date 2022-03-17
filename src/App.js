@@ -121,7 +121,7 @@ function App() {
                   setDisabled(true);
                 }else{
                   if(selectedIdx[0]==5){
-                    setToastMsg("Sorry, Kamu gagal!. Kata yang dimaksud adalah "+word.toUpperCase());
+                    setToastMsg("Sorry, Kamu gagal!. Kata yang dimaksud adalah <a href='https://kbbi.kemdikbud.go.id/entri/"+word+"' target='_blank'>"+word.toUpperCase()+"</a>");
                     setToastTime(5000);
                     setShowToast(true);
                     setDisabled(true);
@@ -246,7 +246,7 @@ function App() {
       .then((text) => {
         let txt = text.replace(/\n/g, ",");
         const data = txt.split(",");
-        const challenge = data.filter((item) => item.length == 5);
+        const challenge = data.map(el => el.replace(/\r/g, "")).filter((item) =>item.length == 5);
         const random = Math.floor(Math.random() * challenge.length);
         setWord(challenge[random])
         setWords(data);
@@ -260,16 +260,6 @@ function App() {
       }, toastTime);
     }
   }, [showToast]);
-
-  // useEffect(() => {
-  //   console.log(masterdata[selectedIdx[0]])
-  //   if (masterdata[selectedIdx[0]].status == 1) {
-  //     setToastMsg("Wow, Congrats! You have finished the game!");
-  //     setToastTime(5000);
-  //     setShowToast(true);
-  //     setDisabled(true);
-  //   }
-  // }, [masterdata]);
 
   useEffect(() => {
     if(words.length==0)fetchWords();
@@ -417,7 +407,7 @@ function App() {
           </button>
         </div>
       </div>
-      <div className={`toast ${showToast ? " show" : ""}`}>{toastMsg}</div>
+      <div className={`toast ${showToast ? " show" : ""}`} dangerouslySetInnerHTML={{__html: toastMsg}}></div>
       <div className={`loading ${showLoading ? " show" : ""}`} >
         <span>Cek Dulu Gan</span>
         <div className="loader"></div>
