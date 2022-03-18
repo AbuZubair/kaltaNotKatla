@@ -99,9 +99,9 @@ function App() {
     resetError();
     if (masterdata[selectedIdx[0]].data.every((item) => item.val !== "")) {
       try {
-        setShowLoading(true)
+        // setShowLoading(true)
         let input = masterdata[selectedIdx[0]].data.map((item) => item.val);
-        const valid = await checkKBBI(input.join("").toLowerCase());
+        const valid = await checkKata(input.join("").toLowerCase());
         if (valid) {
           checkData(0);
           let counter = 1;
@@ -245,8 +245,8 @@ function App() {
       .then((r) => r.text())
       .then((text) => {
         let txt = text.replace(/\n/g, ",");
-        const data = txt.split(",");
-        const challenge = data.map(el => el.replace(/\r/g, "")).filter((item) =>item.length == 5);
+        const data = txt.split(",").map(el => el.replace(/\r/g, ""));
+        const challenge = data.filter((item) =>item.length == 5);
         const random = Math.floor(Math.random() * challenge.length);
         setWord(challenge[random])
         setWords(data);
