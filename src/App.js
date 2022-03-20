@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import raw from "./indonesian-words.txt";
 import "./App.css";
+import Grid from "./components/Grid";
+import Keyboard from "./components/Keyboard";
 
 function App() {
   const [words, setWords] = useState([]);
-  const [word, setWord] = useState('');
+  const [word, setWord] = useState("");
   const [masterdata, setData] = useState([
     {
       status: 0,
@@ -67,32 +69,46 @@ function App() {
       ],
     },
   ]);
+  const [keyboard, setKeyboard] = useState([
+    [
+      { val: "q", status: 0 },
+      { val: "w", status: 0 },
+      { val: "e", status: 0 },
+      { val: "r", status: 0 },
+      { val: "t", status: 0 },
+      { val: "y", status: 0 },
+      { val: "u", status: 0 },
+      { val: "i", status: 0 },
+      { val: "o", status: 0 },
+      { val: "p", status: 0 },
+    ],
+    [
+      { val: "a", status: 0 },
+      { val: "s", status: 0 },
+      { val: "d", status: 0 },
+      { val: "f", status: 0 },
+      { val: "g", status: 0 },
+      { val: "h", status: 0 },
+      { val: "j", status: 0 },
+      { val: "k", status: 0 },
+      { val: "l", status: 0 },
+    ],
+    [
+      { val: "z", status: 0 },
+      { val: "x", status: 0 },
+      { val: "c", status: 0 },
+      { val: "v", status: 0 },
+      { val: "b", status: 0 },
+      { val: "n", status: 0 },
+      { val: "m", status: 0 },
+    ],
+  ]);
   const [selectedIdx, setSelectedIdx] = useState([0, 0]);
   const [showToast, setShowToast] = useState(false);
   const [showLoading, setShowLoading] = useState("");
   const [toastMsg, setToastMsg] = useState("");
   const [toastTime, setToastTime] = useState(3000);
   const [disabled, setDisabled] = useState(false);
-
-  function writeHandle(e) {
-    e.preventDefault();
-    const letter = e.target.innerText;
-    const newData = [...masterdata];
-    if (
-      newData[selectedIdx[0]].data[selectedIdx[1]] &&
-      newData[selectedIdx[0]].data[selectedIdx[1]].val === ""
-    ) {
-      newData[selectedIdx[0]].data[selectedIdx[1]].val = letter;
-      if (selectedIdx[1] <= 4) {
-        setSelectedIdx([selectedIdx[0], selectedIdx[1] + 1]);
-      } else {
-        if (newData[selectedIdx[0]].status != 0)
-          setSelectedIdx([selectedIdx[0] + 1, 0]);
-        else return;
-      }
-      setData(newData);
-    }
-  }
 
   async function enterHandle(e) {
     e.preventDefault();
@@ -119,9 +135,15 @@ function App() {
                   setToastTime(5000);
                   setShowToast(true);
                   setDisabled(true);
-                }else{
-                  if(selectedIdx[0]==5){
-                    setToastMsg("Sorry, Kamu gagal!. Kata yang dimaksud adalah <a href='https://kbbi.kemdikbud.go.id/entri/"+word+"' target='_blank'>"+word.toUpperCase()+"</a>");
+                } else {
+                  if (selectedIdx[0] == 5) {
+                    setToastMsg(
+                      "Sorry, Kamu gagal!. Kata yang dimaksud adalah <a href='https://kbbi.kemdikbud.go.id/entri/" +
+                        word +
+                        "' target='_blank'>" +
+                        word.toUpperCase() +
+                        "</a>"
+                    );
                     setToastTime(5000);
                     setShowToast(true);
                     setDisabled(true);
@@ -144,6 +166,7 @@ function App() {
   function checkData(idx) {
     const arr = word.split("");
     const newData = [...masterdata];
+    const newKeyboard = [...keyboard];
     newData[selectedIdx[0]].data[idx].checked = true;
     setData(newData);
     setTimeout(() => {
@@ -152,6 +175,13 @@ function App() {
         word.toLowerCase().charAt(idx)
       ) {
         newData[selectedIdx[0]].data[idx].res = 1;
+        newKeyboard.map((item, i) => {
+          item.map((item2, j) => {
+            if (item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()) {
+              item2.status = 1;
+            }
+          });
+        })
       } else if (
         arr.includes(newData[selectedIdx[0]].data[idx].val.toLowerCase())
       ) {
@@ -166,20 +196,26 @@ function App() {
           ).length
         )
           newData[selectedIdx[0]].data[idx].res = 2;
+          newKeyboard.map((item, i) => {
+            item.map((item2, j) => {
+              if (item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()) {
+                item2.status = 2;
+              }
+            });
+          })
+      } else {
+        newData[selectedIdx[0]].data[idx].res = -1;
+        newKeyboard.map((item, i) => {
+          item.map((item2, j) => {
+            if (item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()) {
+              item2.status = -1;
+            }
+          });
+        })
       }
       setData(newData);
+      setKeyboard(newKeyboard);
     }, 1000);
-    
-  }
-
-  function backHandle(e) {
-    e.preventDefault();
-    const newData = [...masterdata];
-    if (newData[selectedIdx[0]].data[selectedIdx[1] - 1]) {
-      newData[selectedIdx[0]].data[selectedIdx[1] - 1].val = "";
-      setSelectedIdx([selectedIdx[0], selectedIdx[1] - 1]);
-      setData(newData);
-    }
   }
 
   function checkKata(word) {
@@ -213,7 +249,7 @@ function App() {
               setShowToast(true);
             }
             setData(newData);
-            setShowLoading(false)
+            setShowLoading(false);
             resolve(result.status);
           },
           (error) => {
@@ -245,10 +281,10 @@ function App() {
       .then((r) => r.text())
       .then((text) => {
         let txt = text.replace(/\n/g, ",");
-        const data = txt.split(",").map(el => el.replace(/\r/g, ""));
-        const challenge = data.filter((item) =>item.length == 5);
+        const data = txt.split(",").map((el) => el.replace(/\r/g, ""));
+        const challenge = data.filter((item) => item.length == 5);
         const random = Math.floor(Math.random() * challenge.length);
-        setWord(challenge[random])
+        setWord(challenge[random]);
         setWords(data);
       });
   }
@@ -262,153 +298,28 @@ function App() {
   }, [showToast]);
 
   useEffect(() => {
-    if(words.length==0)fetchWords();
-  },[words]);
+    if (words.length == 0) fetchWords();
+  }, [words]);
+
+  console.log("render APP");
 
   return (
     <div className="container">
-      <div className="wrapper">
-        <div className="title">
-          <h1>KALTA(?)</h1>
-        </div>
-        <div className="grid">
-          {masterdata.map((row, rowIndex) => {
-            return (
-              <div
-                className={`row ${row.status == -1 ? "error" : ""}`}
-                key={rowIndex}
-              >
-                {row.data.map((col, colIndex) => {
-                  return (
-                    <div
-                      className={`col ${col.checked ? "checking" : ""} ${
-                        col.res == 1 ? " green" : col.res == 2 ? " yellow" : ""
-                      }`}
-                      key={colIndex}
-                    >
-                      {col.val}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="keyboard">
-        <div className="flex">
-          <button disabled={disabled} onClick={writeHandle}>
-            q
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            w
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            e
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            r
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            t
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            y
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            u
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            i
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            o
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            p
-          </button>
-        </div>
-        <div className="flex">
-          <div className="space"></div>
-          <button disabled={disabled} onClick={writeHandle}>
-            a
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            s
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            d
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            f
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            g
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            h
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            j
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            k
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            l
-          </button>
-          <div className="space"></div>
-        </div>
-        <div className="flex">
-          <button
-            disabled={disabled}
-            className="enter-back"
-            onClick={enterHandle}
-          >
-            Enter
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            z
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            x
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            c
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            v
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            b
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            n
-          </button>
-          <button disabled={disabled} onClick={writeHandle}>
-            m
-          </button>
-          <button
-            disabled={disabled}
-            className="enter-back"
-            onClick={backHandle}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              viewBox="0 0 24 24"
-              width="24"
-            >
-              <path
-                fill="currentColor"
-                d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"
-              ></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div className={`toast ${showToast ? " show" : ""}`} dangerouslySetInnerHTML={{__html: toastMsg}}></div>
-      <div className={`loading ${showLoading ? " show" : ""}`} >
+      <Grid masterdata={masterdata} selectedIdx={selectedIdx} />
+      <Keyboard
+        selectedIdx={selectedIdx}
+        setSelectedIdx={setSelectedIdx}
+        setData={setData}
+        masterdata={masterdata}
+        disabled={disabled}
+        enterHandle={enterHandle}
+        keyboard={keyboard}
+      />
+      <div
+        className={`toast ${showToast ? " show" : ""}`}
+        dangerouslySetInnerHTML={{ __html: toastMsg }}
+      ></div>
+      <div className={`loading ${showLoading ? " show" : ""}`}>
         <span>Cek Dulu Gan</span>
         <div className="loader"></div>
       </div>

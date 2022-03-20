@@ -145,12 +145,17 @@
 }
 
 .green {
-  background-color: #15803d;
+  background-color: #15803d !important;
   color: #fff;
 }
 
 .yellow{
-  background-color: #ca8a04;
+  background-color: #ca8a04 !important;
+  color: #fff;
+}
+
+.none{
+  background-color: #374151 !important;
   color: #fff;
 }
 
