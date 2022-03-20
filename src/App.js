@@ -296,7 +296,6 @@ function App() {
         const data = txt.split(",").map((el) => el.replace(/\r/g, ""));
         const challenge = data.filter((item) => item.length == 5);
         const random = Math.floor(Math.random() * challenge.length);
-        console.log(challenge[random]);
         setWord(challenge[random]);
         setWords(data);
       });
