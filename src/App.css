@@ -222,6 +222,32 @@
   animation: spin 2s linear infinite;
 }
 
+.retry{
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgb(0, 255, 30);
+  color: #333;
+  margin-top: 10px;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.close{
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
 /* Safari */
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }

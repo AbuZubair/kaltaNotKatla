@@ -132,13 +132,13 @@ function App() {
                   newData[selectedIdx[0]].status = 1;
                   setData(newData);
                   setToastMsg(
-                    "Wow, Kamu berhasil!. </br><a href='https://kbbi.kemdikbud.go.id/entri/" +
+                    "Wow, Kamu berhasil!. <a href='https://kbbi.kemdikbud.go.id/entri/" +
                       word +
                       "' target='_blank'>" +
                       word.toUpperCase() +
                       "</a>"
                   );
-                  setToastTime(5000);
+                  setToastTime(null);
                   setShowToast(true);
                   setDisabled(true);
                 } else {
@@ -183,11 +183,13 @@ function App() {
         newData[selectedIdx[0]].data[idx].res = 1;
         newKeyboard.map((item, i) => {
           item.map((item2, j) => {
-            if (item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()) {
+            if (
+              item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()
+            ) {
               item2.status = 1;
             }
           });
-        })
+        });
       } else if (
         arr.includes(newData[selectedIdx[0]].data[idx].val.toLowerCase())
       ) {
@@ -202,22 +204,26 @@ function App() {
           ).length
         )
           newData[selectedIdx[0]].data[idx].res = 2;
-          newKeyboard.map((item, i) => {
-            item.map((item2, j) => {
-              if (item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()) {
-                item2.status = 2;
-              }
-            });
-          })
+        newKeyboard.map((item, i) => {
+          item.map((item2, j) => {
+            if (
+              item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()
+            ) {
+              item2.status = 2;
+            }
+          });
+        });
       } else {
         newData[selectedIdx[0]].data[idx].res = -1;
         newKeyboard.map((item, i) => {
           item.map((item2, j) => {
-            if (item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()) {
+            if (
+              item2.val == newData[selectedIdx[0]].data[idx].val.toLowerCase()
+            ) {
               item2.status = -1;
             }
           });
-        })
+        });
       }
       setData(newData);
       setKeyboard(newKeyboard);
@@ -290,13 +296,18 @@ function App() {
         const data = txt.split(",").map((el) => el.replace(/\r/g, ""));
         const challenge = data.filter((item) => item.length == 5);
         const random = Math.floor(Math.random() * challenge.length);
+        console.log(challenge[random]);
         setWord(challenge[random]);
         setWords(data);
       });
   }
 
+  function reloadPage() {
+    window.location.reload(false);
+  }
+
   useEffect(() => {
-    if (showToast) {
+    if (showToast && toastTime) {
       setTimeout(() => {
         resetError();
       }, toastTime);
@@ -319,10 +330,17 @@ function App() {
         enterHandle={enterHandle}
         keyboard={keyboard}
       />
-      <div
-        className={`toast ${showToast ? " show" : ""}`}
-        dangerouslySetInnerHTML={{ __html: toastMsg }}
-      ></div>
+      <div className={`toast ${showToast ? " show" : ""}`}>
+        <div dangerouslySetInnerHTML={{ __html: toastMsg }}></div>
+        <div hidden={showToast && !toastTime ? "" : "hidden"}>
+          <button className="retry" onClick={reloadPage}>
+            Main lagi??
+          </button>
+          <button className="close" onClick={resetError}>
+            Close
+          </button>
+        </div>
+      </div>
       <div className={`loading ${showLoading ? " show" : ""}`}>
         <span>Cek Dulu Gan</span>
         <div className="loader"></div>
