@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/kaltaNotKatla/static/css/main.d8ec9322.css",
-    "main.js": "/kaltaNotKatla/static/js/main.7cbd240c.js",
+    "main.css": "/kaltaNotKatla/static/css/main.3c143834.css",
+    "main.js": "/kaltaNotKatla/static/js/main.be15d6b4.js",
     "static/js/787.953270c2.chunk.js": "/kaltaNotKatla/static/js/787.953270c2.chunk.js",
     "static/media/indonesian-words.txt": "/kaltaNotKatla/static/media/indonesian-words.f05ebee793808ddd9aea.txt",
     "index.html": "/kaltaNotKatla/index.html",
-    "main.d8ec9322.css.map": "/kaltaNotKatla/static/css/main.d8ec9322.css.map",
-    "main.7cbd240c.js.map": "/kaltaNotKatla/static/js/main.7cbd240c.js.map",
+    "main.3c143834.css.map": "/kaltaNotKatla/static/css/main.3c143834.css.map",
+    "main.be15d6b4.js.map": "/kaltaNotKatla/static/js/main.be15d6b4.js.map",
     "787.953270c2.chunk.js.map": "/kaltaNotKatla/static/js/787.953270c2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d8ec9322.css",
-    "static/js/main.7cbd240c.js"
+    "static/css/main.3c143834.css",
+    "static/js/main.be15d6b4.js"
   ]
 }
