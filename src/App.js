@@ -131,7 +131,13 @@ function App() {
                 ) {
                   newData[selectedIdx[0]].status = 1;
                   setData(newData);
-                  setToastMsg("Wow, Congrats! You have finished the game!");
+                  setToastMsg(
+                    "Wow, Kamu berhasil!. </br><a href='https://kbbi.kemdikbud.go.id/entri/" +
+                      word +
+                      "' target='_blank'>" +
+                      word.toUpperCase() +
+                      "</a>"
+                  );
                   setToastTime(5000);
                   setShowToast(true);
                   setDisabled(true);
@@ -300,8 +306,6 @@ function App() {
   useEffect(() => {
     if (words.length == 0) fetchWords();
   }, [words]);
-
-  console.log("render APP");
 
   return (
     <div className="container">
