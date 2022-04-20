@@ -3,6 +3,14 @@ import raw from "./indonesian-words.txt";
 import "./App.css";
 import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
+import sendEvent from './useGaEvent';
+import ReactGA from "react-ga4";
+
+const kbbiUrl = "https://kbbi.kemdikbud.go.id/entri/";
+const gaId = process.env.REACT_APP_GA_ID
+
+ReactGA.initialize(gaId);
+ReactGA.send("pageview");
 
 function App() {
   const [words, setWords] = useState([]);
@@ -132,30 +140,25 @@ function App() {
                   newData[selectedIdx[0]].status = 1;
                   setData(newData);
                   setToastMsg(
-                    "Wow, Kamu berhasil!. <a href='https://kbbi.kemdikbud.go.id/entri/" +
-                      word +
-                      "' target='_blank'>" +
-                      word.toUpperCase() +
-                      "</a>"
+                    `Wow, Kamu berhasil. <a href='${kbbiUrl}${word}' target='_blank'>${word.toUpperCase()}</a>`
                   );
                   setToastTime(null);
                   setShowToast(true);
                   setDisabled(true);
+                  sendEvent('win_game')
                 } else {
                   if (selectedIdx[0] == 5) {
                     setToastMsg(
-                      "Sorry, Kamu gagal!. Kata yang dimaksud adalah <a href='https://kbbi.kemdikbud.go.id/entri/" +
-                        word +
-                        "' target='_blank'>" +
-                        word.toUpperCase() +
-                        "</a>"
+                      `Sorry, Kamu gagal!. Kata yang dimaksud adalah <a href='${kbbiUrl}${word}' target='_blank'>${word.toUpperCase()}</a>`
                     );
                     setToastTime(5000);
                     setShowToast(true);
                     setDisabled(true);
+                    sendEvent('lose_game')
                   }
                 }
               }, 1500);
+              sendEvent(selectedIdx[0])
               setSelectedIdx([selectedIdx[0] + 1, 0]);
               clearInterval(interval);
             } else {
